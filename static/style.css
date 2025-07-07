@@ -1,0 +1,321 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f7f9;
+    color: #333;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+
+header h1 {
+    color: #2c3e50;
+    font-size: 2em;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+#ipoNameInput {
+    padding: 10px 15px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+    width: 60%;
+    max-width: 300px;
+}
+
+#searchButton {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#searchButton:hover {
+    background-color: #2980b9;
+}
+
+main#resultsContainer {
+    margin-top: 20px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#loadingIndicator {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.1em;
+    color: #555;
+}
+
+.spinner {
+    margin: 15px auto;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border-left-color: #3498db;
+    animation: spin 1s ease infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#errorDisplay {
+    text-align: center;
+    padding: 15px;
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #e57373;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.ipo-info {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.ipo-info h2 {
+    color: #34495e;
+    margin-bottom: 5px;
+}
+
+.sentiment-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.chart-container {
+    width: 100%;
+    max-width: 250px; /* Smaller pie chart */
+    height: auto;
+}
+
+.score-verdict {
+    text-align: center;
+}
+
+.score-verdict h3 {
+    color: #555;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+}
+
+.score-value {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #3498db;
+    margin: 5px 0 15px 0;
+}
+
+.badge {
+    display: inline-block;
+    padding: 8px 15px;
+    font-size: 1.1em;
+    font-weight: bold;
+    border-radius: 20px;
+    color: #fff;
+}
+
+/* Verdict badge colors */
+.badge.strong-subscribe { background-color: #2ecc71; } /* Green */
+.badge.cautious-subscribe { background-color: #f1c40f; } /* Yellow */
+.badge.neutral { background-color: #95a5a6; } /* Grey */
+.badge.avoid { background-color: #e74c3c; } /* Red */
+.badge.na { background-color: #bdc3c7; } /* Light Grey for N/A */
+
+
+.highlights {
+    margin-bottom: 30px;
+}
+
+.highlights h3, .top-snippets h3 {
+    text-align: center;
+    color: #34495e;
+    margin-bottom: 15px;
+}
+
+.highlight-columns {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.highlight-column {
+    flex: 1;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    border: 1px solid #eef;
+}
+
+.highlight-column h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+.positive-highlights h4 { color: #27ae60; border-bottom-color: #abe0c0;}
+.negative-highlights h4 { color: #c0392b; border-bottom-color: #f5b7b1;}
+
+.highlight-column ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.highlight-column ul li {
+    padding: 5px 0;
+    font-size: 0.95em;
+    border-bottom: 1px dashed #eee;
+}
+.highlight-column ul li:last-child {
+    border-bottom: none;
+}
+
+.sentiment-emoji {
+    font-size: 0.8em;
+}
+
+.top-snippets ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.top-snippets ul li {
+    background-color: #fdfdfd;
+    border: 1px solid #eaeaea;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.top-snippets ul li .sentiment-indicator {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+.top-snippets ul li .sentiment-indicator.positive { background-color: #2ecc71; }
+.top-snippets ul li .sentiment-indicator.neutral { background-color: #95a5a6; }
+.top-snippets ul li .sentiment-indicator.negative { background-color: #e74c3c; }
+
+.top-snippets ul li .snippet-text {
+    font-style: italic;
+    color: #555;
+}
+
+.top-snippets ul li .snippet-source {
+    display: block;
+    font-size: 0.85em;
+    color: #777;
+    margin-top: 5px;
+    text-align: right;
+}
+.top-snippets ul li .snippet-source a {
+    color: #3498db;
+    text-decoration: none;
+}
+.top-snippets ul li .snippet-source a:hover {
+    text-decoration: underline;
+}
+
+.export-options {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+#downloadPdfButton {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #16a085; /* Different color for distinction */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#downloadPdfButton:hover {
+    background-color: #117a65;
+}
+
+#downloadPdfButton.hidden {
+    display: none;
+}
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    font-size: 0.9em;
+    color: #777;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sentiment-summary {
+        flex-direction: column;
+    }
+    .chart-container {
+        max-width: 280px; /* Allow chart to be a bit bigger on mobile */
+        margin-bottom: 20px;
+    }
+    .highlight-columns {
+        flex-direction: column;
+    }
+    .search-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    #ipoNameInput, #searchButton {
+        width: 100%;
+        max-width: none;
+        border-radius: 4px; /* Full radius for stacked items */
+        margin-bottom: 10px; /* Space between input and button */
+    }
+    #searchButton {
+        margin-bottom: 0;
+    }
+}

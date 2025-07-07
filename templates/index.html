@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI IPO Market Sentiment Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI IPO Market Sentiment Tracker</h1>
+            <div class="search-container">
+                <input type="text" id="ipoNameInput" placeholder="Enter IPO/Company Name...">
+                <button id="searchButton">Analyze Sentiment</button>
+            </div>
+        </header>
+
+        <main id="resultsContainer" class="hidden">
+            <div id="loadingIndicator" class="hidden">
+                <p>Loading analysis...</p>
+                <div class="spinner"></div>
+            </div>
+            <div id="errorDisplay" class="hidden">
+                <p id="errorMessage"></p>
+            </div>
+
+            <div id="analysisResults">
+                <section class="ipo-info">
+                    <h2 id="companyNameDisplay"></h2>
+                    <p>IPO Date: <span id="ipoDateDisplay">N/A</span></p>
+                </section>
+
+                <section class="sentiment-summary">
+                    <div class="chart-container">
+                        <canvas id="sentimentPieChart"></canvas>
+                    </div>
+                    <div class="score-verdict">
+                        <h3>Market Sentiment Score</h3>
+                        <p id="marketSentimentScore" class="score-value">N/A</p>
+                        <h3>Verdict</h3>
+                        <p id="verdictBadge" class="badge">N/A</p>
+                    </div>
+                </section>
+
+                <section class="highlights">
+                    <h3>Key Sentiment Highlights</h3>
+                    <div class="highlight-columns">
+                        <div class="highlight-column positive-highlights">
+                            <h4>Positive <span class="sentiment-emoji">🟢</span></h4>
+                            <ul id="positiveHighlightsList"></ul>
+                        </div>
+                        <div class="highlight-column negative-highlights">
+                            <h4>Negative <span class="sentiment-emoji">🔴</span></h4>
+                            <ul id="negativeHighlightsList"></ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="top-snippets">
+                    <h3>Top News Snippets/Sources</h3>
+                    <ul id="topSnippetsList"></ul>
+                </section>
+
+                <section class="export-options">
+                    <button id="downloadPdfButton" class="hidden">Download Report as PDF</button>
+                </section>
+            </div>
+        </main>
+        <footer>
+            <p>IPO Sentiment Tracker v1.0</p>
+        </footer>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

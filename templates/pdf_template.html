@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IPO Sentiment Report: {{ data.company_name }}</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.5;
+            color: #333;
+            margin: 20px;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #2c3e50;
+        }
+        .header p {
+            margin: 5px 0 0 0;
+            font-size: 12px;
+            color: #777;
+        }
+        .section {
+            margin-bottom: 25px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .section h2 {
+            font-size: 18px;
+            color: #34495e;
+            margin-top: 0;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        .info p, .score-verdict p {
+            margin: 5px 0;
+        }
+        .info strong, .score-verdict strong {
+            display: inline-block;
+            width: 180px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 10px;
+            color: #fff;
+        }
+        .badge.strong-subscribe { background-color: #2ecc71; }
+        .badge.cautious-subscribe { background-color: #f1c40f; }
+        .badge.neutral { background-color: #95a5a6; }
+        .badge.avoid { background-color: #e74c3c; }
+        .badge.na { background-color: #bdc3c7; }
+
+        .highlights-container {
+            display: block; /* Weasyprint handles flex differently, block is safer */
+        }
+        .highlight-column {
+            margin-bottom:10px;
+        }
+        .highlight-column h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .highlight-column ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin: 0;
+        }
+        .highlight-column ul li {
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+        .positive-highlights h3 { color: #27ae60; }
+        .negative-highlights h3 { color: #c0392b; }
+
+        .snippets ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .snippets li {
+            border: 1px solid #eee;
+            padding: 8px;
+            margin-bottom: 8px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        .snippets li .sentiment-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        .snippets li .sentiment-indicator.positive { background-color: #2ecc71; }
+        .snippets li .sentiment-indicator.neutral { background-color: #95a5a6; }
+        .snippets li .sentiment-indicator.negative { background-color: #e74c3c; }
+        .snippets li .snippet-source {
+            display: block;
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 3px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            font-size: 10px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>IPO Sentiment Analysis Report</h1>
+        <p>Company: {{ data.company_name }}</p>
+        <p>Report Generated: {{ generation_date }}</p>
+    </div>
+
+    <div class="section info">
+        <h2>Summary</h2>
+        <p><strong>Company Name:</strong> {{ data.company_name }}</p>
+        <p><strong>IPO Date:</strong> {{ data.ipo_date }}</p>
+        <p><strong>Source Articles Analyzed:</strong> {{ data.source_article_count }}</p>
+    </div>
+
+    <div class="section score-verdict">
+        <h2>Overall Sentiment</h2>
+        <p><strong>Market Sentiment Score (1-5):</strong> {{ data.market_sentiment_score | round(2) }}</p>
+        <p><strong>Verdict:</strong> <span class="badge {{ data.verdict | lower | replace(' ', '-') }}">{{ data.verdict }}</span></p>
+        <p><strong>Positive Sentiment:</strong> {{ data.sentiment_breakdown.Positive | default(0) | round(1) }}%</p>
+        <p><strong>Neutral Sentiment:</strong> {{ data.sentiment_breakdown.Neutral | default(0) | round(1) }}%</p>
+        <p><strong>Negative Sentiment:</strong> {{ data.sentiment_breakdown.Negative | default(0) | round(1) }}%</p>
+    </div>
+
+    <div class="section highlights-container">
+        <h2>Key Sentiment Highlights</h2>
+        <div class="highlight-column positive-highlights">
+            <h3>Positive</h3>
+            {% if data.highlights and data.highlights.positive %}
+                <ul>
+                    {% for item in data.highlights.positive %}<li>{{ item }}</li>{% endfor %}
+                </ul>
+            {% else %}
+                <p>N/A</p>
+            {% endif %}
+        </div>
+        <div class="highlight-column negative-highlights">
+            <h3>Negative</h3>
+            {% if data.highlights and data.highlights.negative %}
+                <ul>
+                    {% for item in data.highlights.negative %}<li>{{ item }}</li>{% endfor %}
+                </ul>
+            {% else %}
+                <p>N/A</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if data.top_snippets %}
+    <div class="section snippets">
+        <h2>Top Snippets/Sources</h2>
+        <ul>
+            {% for snippet in data.top_snippets %}
+            <li>
+                <span class="sentiment-indicator {{ snippet.sentiment | lower }}"></span>
+                <em>{{ snippet.text }}</em>
+                {% if snippet.source and snippet.source != '#' %}
+                <span class="snippet-source">Source: {{ snippet.source }}</span>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <div class="footer">
+        <p>This report is auto-generated based on public news sentiment analysis. Not financial advice.</p>
+    </div>
+</body>
+</html>
